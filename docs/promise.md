@@ -70,7 +70,7 @@ timeout(100).then((value) => {
 
 上面代码中，`timeout`方法返回一个`Promise`实例，表示一段时间以后才会发生的结果。过了指定的时间（`ms`参数）以后，`Promise`实例的状态变为`resolved`，就会触发`then`方法绑定的回调函数。
 
-Promise 新建后就会立即执行。
+==Promise 新建后就会立即执行==。
 
 ```javascript
 let promise = new Promise(function(resolve, reject) {
@@ -89,7 +89,7 @@ console.log('Hi!');
 // resolved
 ```
 
-上面代码中，Promise 新建后立即执行，所以首先输出的是`Promise`。然后，`then`方法指定的回调函数，将在当前脚本所有同步任务执行完才会执行，所以`resolved`最后输出。
+上面代码中，==Promise 新建后立即执行，所以首先输出的是`Promise`。然后，`then`方法指定的回调函数，将在当前脚本所有同步任务执行完才会执行，所以`resolved`最后输出==。
 
 下面是异步加载图片的例子。
 
@@ -212,7 +212,7 @@ new Promise((resolve, reject) => {
 
 Promise 实例具有`then`方法，也就是说，`then`方法是定义在原型对象`Promise.prototype`上的。它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，`then`方法的第一个参数是`resolved`状态的回调函数，第二个参数是`rejected`状态的回调函数，它们都是可选的。
 
-`then`方法返回的是一个新的`Promise`实例（注意，不是原来那个`Promise`实例）。因此可以采用链式写法，即`then`方法后面再调用另一个`then`方法。
+==`then`方法返回的是一个新的`Promise`实例（**注意，不是原来那个`Promise`实例**）。因此可以采用链式写法，即`then`方法后面再调用另一个`then`方法==。
 
 ```javascript
 getJSON("/posts.json").then(function(json) {
@@ -618,7 +618,7 @@ Promise.all([
 
 上面代码中，`booksPromise`和`userPromise`是两个异步操作，只有等到它们的结果都返回了，才会触发`pickTopRecommendations`这个回调函数。
 
-注意，如果作为参数的 Promise 实例，自己定义了`catch`方法，那么它一旦被`rejected`，并不会触发`Promise.all()`的`catch`方法。
+==注意，如果作为参数的 Promise 实例，自己定义了`catch`方法，那么它一旦被`rejected`，并不会触发`Promise.all()`的`catch`方法==。
 
 ```javascript
 const p1 = new Promise((resolve, reject) => {
@@ -639,7 +639,7 @@ Promise.all([p1, p2])
 // ["hello", Error: 报错了]
 ```
 
-上面代码中，`p1`会`resolved`，`p2`首先会`rejected`，但是`p2`有自己的`catch`方法，该方法返回的是一个新的 Promise 实例，`p2`指向的实际上是这个实例。该实例执行完`catch`方法后，也会变成`resolved`，导致`Promise.all()`方法参数里面的两个实例都会`resolved`，因此会调用`then`方法指定的回调函数，而不会调用`catch`方法指定的回调函数。
+上面代码中，==`p1`会`resolved`，`p2`首先会`rejected`，但是`p2`有自己的`catch`方法，该方法返回的是一个新的 Promise 实例，`p2`指向的实际上是这个实例。该实例执行完`catch`方法后，也会变成`resolved`，导致`Promise.all()`方法参数里面的两个实例都会`resolved`，因此会调用`then`方法指定的回调函数，而不会调用`catch`方法指定的回调函数==。
 
 如果`p2`没有自己的`catch`方法，就会调用`Promise.all()`的`catch`方法。
 
@@ -788,9 +788,9 @@ Promise.any([
 });
 ```
 
-只要参数实例有一个变成`fulfilled`状态，包装实例就会变成`fulfilled`状态；如果所有参数实例都变成`rejected`状态，包装实例就会变成`rejected`状态。
+==只要参数实例有一个变成`fulfilled`状态，包装实例就会变成`fulfilled`状态；如果所有参数实例都变成`rejected`状态，包装实例就会变成`rejected`状态==。
 
-`Promise.any()`跟`Promise.race()`方法很像，只有一点不同，就是`Promise.any()`不会因为某个 Promise 变成`rejected`状态而结束，必须等到所有参数 Promise 变成`rejected`状态才会结束。
+==`Promise.any()`跟`Promise.race()`方法很像，只有一点不同，就是`Promise.any()`不会因为某个 Promise 变成`rejected`状态而结束，必须等到所有参数 Promise 变成`rejected`状态才会结束==。
 
 下面是`Promise()`与`await`命令结合使用的例子。
 
@@ -909,7 +909,7 @@ p.then(function (s) {
 
 **（4）不带有任何参数**
 
-`Promise.resolve()`方法允许调用时不带参数，直接返回一个`resolved`状态的 Promise 对象。
+==`Promise.resolve()`方法允许调用时不带参数，直接返回一个`resolved`状态的 Promise 对象==。
 
 所以，如果希望得到一个 Promise 对象，比较方便的方法就是直接调用`Promise.resolve()`方法。
 
@@ -923,7 +923,7 @@ p.then(function () {
 
 上面代码的变量`p`就是一个 Promise 对象。
 
-需要注意的是，立即`resolve()`的 Promise 对象，是在本轮“事件循环”（event loop）的结束时执行，而不是在下一轮“事件循环”的开始时。
+==需要注意的是，立即 `resolve()` 的 Promise 对象，是在本轮“事件循环”（event loop）的结束时执行，而不是在下一轮“事件循环”的开始时==。
 
 ```javascript
 setTimeout(function () {
@@ -941,7 +941,7 @@ console.log('one');
 // three
 ```
 
-上面代码中，`setTimeout(fn, 0)`在下一轮“事件循环”开始时执行，`Promise.resolve()`在本轮“事件循环”结束时执行，`console.log('one')`则是立即执行，因此最先输出。
+上面代码中，==`setTimeout(fn, 0)`在下一轮“事件循环”开始时执行，`Promise.resolve()`在本轮“事件循环”结束时执行，`console.log('one')`则是立即执行，因此最先输出。==
 
 ## Promise.reject()
 
@@ -1038,7 +1038,7 @@ run(g);
 Promise.resolve().then(f)
 ```
 
-上面的写法有一个缺点，就是如果`f`是同步函数，那么它会在本轮事件循环的末尾执行。
+上面的写法有一个缺点，<font color="red">就是如果`f`是同步函数，那么它会在本轮事件循环的末尾执行</font>。
 
 ```javascript
 const f = () => console.log('now');
